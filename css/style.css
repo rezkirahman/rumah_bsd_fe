@@ -7761,6 +7761,7 @@ li.mm-listitem:focus {
   position: relative;
   z-index: 2;
 }
+
 .advance-search-tab .nav.nav-tabs {
   background-color: #ffffff;
   border-bottom: 1px solid #DDDDDD;
@@ -7799,7 +7800,7 @@ li.mm-listitem:focus {
 }
 .advance-search-tab .tab-content {
   background-color: #ffffff;
-  border-radius: 0 12px 12px 12px;
+  border-radius: 12px 12px 12px 12px;
   padding: 20px;
   position: relative;
 }
