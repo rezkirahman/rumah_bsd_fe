@@ -1295,12 +1295,12 @@
 
                   // Ambil nilai input
                   var housePriceInputValue = document.getElementById('house-price').value;
-                  var housePrice = parseFloat(housePriceInputValue.replace(/Rp |\./g, ""));
-                  var downPaymentPercentage = parseFloat(document.getElementById('down-payment').value);
-                  var loanTerm = parseFloat(document.getElementById('loan-term').value);
-                  var fixedRatePercentage = parseFloat(document.getElementById('fixed-rate').value);
-                  var fixedTerm = parseFloat(document.getElementById('fixed-term').value);
-                  var floatingRatePercentage = parseFloat(document.getElementById('floating-rate').value);
+                  var housePrice = 1000000000//parseFloat(housePriceInputValue.replace(/Rp |\./g, ""));
+                  var downPaymentPercentage = 20//parseFloat(document.getElementById('down-payment').value);
+                  var loanTerm = 15//parseFloat(document.getElementById('loan-term').value);
+                  var fixedRatePercentage = 4//parseFloat(document.getElementById('fixed-rate').value);
+                  var fixedTerm = 3//parseFloat(document.getElementById('fixed-term').value);
+                  var floatingRatePercentage = 12//parseFloat(document.getElementById('floating-rate').value);
 
                   // Hitung jumlah pinjaman setelah down payment
                   var downPaymentAmount = (downPaymentPercentage / 100) * housePrice;
@@ -1316,7 +1316,7 @@
 
                   // Hitung bunga floating rate
                   var floatingMonthlyInterest = (floatingRatePercentage / 100) / 12;
-                  var floatingTermInMonths = loanTerm * 12;
+                  var floatingTermInMonths = (loanTerm - fixedTerm) * 12;
                   var floatingMonthlyPayment = (remainingLoanAmount * floatingMonthlyInterest) / (1 - Math.pow(1 + floatingMonthlyInterest, -floatingTermInMonths));
 
                   // Hitung total cicilan per bulan
@@ -1332,7 +1332,7 @@
                   console.log(formatter.format(fixedMonthlyPayment.toFixed(2)));
                   console.log(formatter.format(floatingMonthlyPayment.toFixed(2)));
                   // Tampilkan hasil
-                  document.getElementById('monthly-payment').value = formatter.format(totalMonthlyPayment.toFixed(2));
+                  document.getElementById('monthly-payment').value = formatter.format(totalMonthlyPayment.toFixed(0));
 
                   // Tampilkan hasil div
                   document.getElementById('results').style.display = 'block';
