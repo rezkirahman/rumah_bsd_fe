@@ -1229,20 +1229,20 @@
                         <div class="col-md-6">
                           <div class="mb-4">
                             <label class="fw600 ff-heading mb-2">Harga Rumah</label>
-                            <input id="house-price" type="text" class="form-control" placeholder="1000.000.000">
+                            <input id="house-price" type="text" class="form-control" placeholder="Rp 1000.000.000">
                           </div>
                         </div>
                         <script>
                           document.getElementById('house-price').addEventListener('input', function (e) {
-                              e.target.value = formatCurrency(e.target.value);
+                            e.target.value = formatCurrency(e.target.value);
                           });
-                      
+
                           function formatCurrency(value) {
-                              value = value.replace(/\D/g, ""); // Remove non-digits
-                              value = value.replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Add thousands separator
-                              return "Rp " + value;
+                            value = value.replace(/\D/g, ""); // Remove non-digits
+                            value = value.replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Add thousands separator
+                            return "Rp " + value;
                           }
-                      </script>
+                        </script>
                         <div class="col-md-6">
                           <div class="mb-4">
                             <label class="fw600 ff-heading mb-2">Down Payment (%)</label>
@@ -1275,7 +1275,7 @@
                         </div>
                         <div id="results" class="col-md-12" style="display: none;">
                           <div class="mb-4">
-                            <label class="fw600 ff-heading mb-2">Cicilan Perbulan</label>
+                            <label class="fw600 ff-heading mb-2">Rata-rata Cicilan Perbulan</label>
                             <input id="monthly-payment" type="text" class="form-control" readonly>
                           </div>
                         </div>
@@ -1292,7 +1292,7 @@
               <script>
                 document.getElementById('loan-form').addEventListener('submit', function (e) {
                   e.preventDefault();
-                  
+
                   // Ambil nilai input
                   var housePriceInputValue = document.getElementById('house-price').value;
                   var housePrice = parseFloat(housePriceInputValue.replace(/Rp |\./g, ""));
@@ -1306,21 +1306,21 @@
                   var downPaymentAmount = (downPaymentPercentage / 100) * housePrice;
                   var loanAmount = housePrice - downPaymentAmount;
 
-                  // Hitung bunga fixed rate
+                  // Hitung cicilan bulanan untuk periode fixed rate
                   var fixedMonthlyInterest = (fixedRatePercentage / 100) / 12;
-                  var fixedTermInMonths = fixedTerm * 12;
+                  var fixedTermInMonths = loanTerm * 12;
                   var fixedMonthlyPayment = (loanAmount * fixedMonthlyInterest) / (1 - Math.pow(1 + fixedMonthlyInterest, -fixedTermInMonths));
 
                   // Hitung sisa pinjaman setelah periode fixed rate
-                  var remainingLoanAmount = loanAmount - (fixedMonthlyPayment * fixedTermInMonths);
+                  var remainingLoanAmount = loanAmount;
 
                   // Hitung bunga floating rate
                   var floatingMonthlyInterest = (floatingRatePercentage / 100) / 12;
-                  var floatingTermInMonths = (loanTerm - fixedTerm) * 12;
+                  var floatingTermInMonths = loanTerm * 12;
                   var floatingMonthlyPayment = (remainingLoanAmount * floatingMonthlyInterest) / (1 - Math.pow(1 + floatingMonthlyInterest, -floatingTermInMonths));
 
                   // Hitung total cicilan per bulan
-                  var totalMonthlyPayment = fixedMonthlyPayment + floatingMonthlyPayment;
+                  var totalMonthlyPayment = (fixedMonthlyPayment + floatingMonthlyPayment) / 2;
 
                   // format IDR
                   var formatter = new Intl.NumberFormat('id-ID', {
@@ -1329,6 +1329,8 @@
                     minimumFractionDigits: 2
                   });
 
+                  console.log(formatter.format(fixedMonthlyPayment.toFixed(2)));
+                  console.log(formatter.format(floatingMonthlyPayment.toFixed(2)));
                   // Tampilkan hasil
                   document.getElementById('monthly-payment').value = formatter.format(totalMonthlyPayment.toFixed(2));
 
