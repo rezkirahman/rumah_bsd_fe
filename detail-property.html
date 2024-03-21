@@ -1295,12 +1295,12 @@
 
                   // Ambil nilai input
                   var housePriceInputValue = document.getElementById('house-price').value;
-                  var housePrice = 1000000000//parseFloat(housePriceInputValue.replace(/Rp |\./g, ""));
-                  var downPaymentPercentage = 20//parseFloat(document.getElementById('down-payment').value);
-                  var loanTerm = 15//parseFloat(document.getElementById('loan-term').value);
-                  var fixedRatePercentage = 4//parseFloat(document.getElementById('fixed-rate').value);
-                  var fixedTerm = 3//parseFloat(document.getElementById('fixed-term').value);
-                  var floatingRatePercentage = 12//parseFloat(document.getElementById('floating-rate').value);
+                  var housePrice = parseFloat(housePriceInputValue.replace(/Rp |\./g, ""));
+                  var downPaymentPercentage = parseFloat(document.getElementById('down-payment').value);
+                  var loanTerm = parseFloat(document.getElementById('loan-term').value);
+                  var fixedRatePercentage = parseFloat(document.getElementById('fixed-rate').value);
+                  var fixedTerm = parseFloat(document.getElementById('fixed-term').value);
+                  var floatingRatePercentage = parseFloat(document.getElementById('floating-rate').value);
 
                   // Hitung jumlah pinjaman setelah down payment
                   var downPaymentAmount = (downPaymentPercentage / 100) * housePrice;
