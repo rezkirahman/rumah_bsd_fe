@@ -1302,26 +1302,6 @@
                   var fixedTerm = parseFloat(document.getElementById('fixed-term').value);
                   var floatingRatePercentage = parseFloat(document.getElementById('floating-rate').value);
 
-                  // Hitung jumlah pinjaman setelah down payment
-                  var downPaymentAmount = (downPaymentPercentage / 100) * housePrice;
-                  var loanAmount = housePrice - downPaymentAmount;
-
-                  // Hitung cicilan bulanan untuk periode fixed rate
-                  var fixedMonthlyInterest = (fixedRatePercentage / 100) / 12;
-                  var fixedTermInMonths = loanTerm * 12;
-                  var fixedMonthlyPayment = (loanAmount * fixedMonthlyInterest) / (1 - Math.pow(1 + fixedMonthlyInterest, -fixedTermInMonths));
-
-                  // Hitung sisa pinjaman setelah periode fixed rate
-                  var remainingLoanAmount = loanAmount;
-
-                  // Hitung bunga floating rate
-                  var floatingMonthlyInterest = (floatingRatePercentage / 100) / 12;
-                  var floatingTermInMonths = (loanTerm - fixedTerm) * 12;
-                  var floatingMonthlyPayment = (remainingLoanAmount * floatingMonthlyInterest) / (1 - Math.pow(1 + floatingMonthlyInterest, -floatingTermInMonths));
-
-                  // Hitung total cicilan per bulan
-                  var totalMonthlyPayment = (fixedMonthlyPayment + floatingMonthlyPayment) / 2;
-
                   // format IDR
                   var formatter = new Intl.NumberFormat('id-ID', {
                     style: 'currency',
@@ -1329,8 +1309,34 @@
                     minimumFractionDigits: 2
                   });
 
-                  console.log(formatter.format(fixedMonthlyPayment.toFixed(2)));
-                  console.log(formatter.format(floatingMonthlyPayment.toFixed(2)));
+                  //hitung lama cicilan dalam bulan
+                  var loanTermInMonths = loanTerm * 12;
+
+                  //hitung pinjaman
+                  var loanAfterDP = housePrice - (housePrice * (downPaymentPercentage / 100));
+
+                  //hitung cicilan pokok
+                  var mainLoan = loanAfterDP / loanTermInMonths;
+                  console.log(mainLoan);
+                  //hitung bunga fixed
+                  var fixedRate = fixedRatePercentage / 100;
+                  var fixedMonthlyRate = loanAfterDP * fixedRate * loanTerm / loanTermInMonths
+
+                  //hitung total cicilan bunga fix
+                  var totalFixedPayment = mainLoan + fixedMonthlyRate;
+                  console.log(totalFixedPayment);
+
+                  //hitung bunga floating
+                  var floatingRate = floatingRatePercentage / 100;
+                  var floatingMonthlyRate = loanAfterDP * floatingRate * loanTerm / loanTermInMonths;
+
+                  //hitung total cicilan bunga floating
+                  var totalFloatingPayment = mainLoan + floatingMonthlyRate;
+                  console.log(totalFloatingPayment);
+
+                  //hitung total cicilan perbulan
+                  var totalMonthlyPayment = ((totalFixedPayment * fixedTerm * 12) + (totalFloatingPayment * (loanTerm - fixedTerm) * 12)) / loanTermInMonths;
+
                   // Tampilkan hasil
                   document.getElementById('monthly-payment').value = formatter.format(totalMonthlyPayment.toFixed(0));
 
